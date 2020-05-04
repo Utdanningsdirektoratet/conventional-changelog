@@ -18,7 +18,7 @@ var options = {
     (process.env.CZ_MAX_HEADER_WIDTH &&
       parseInt(process.env.CZ_MAX_HEADER_WIDTH)) ||
     config.maxHeaderWidth ||
-    100,
+    70,
   maxLineWidth:
     (process.env.CZ_MAX_LINE_WIDTH &&
       parseInt(process.env.CZ_MAX_LINE_WIDTH)) ||
