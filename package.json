@@ -1,6 +1,6 @@
 {
   "name": "@udir/conventional-changelog",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Commitizen adapter following the conventional-changelog format for urk.",
   "main": "index.js",
   "scripts": {
@@ -13,7 +13,6 @@
     "type": "git",
     "url": "git@github.com:Utdanningsdirektoratet/conventional-changelog.git"
   },
-  "engineStrict": true,
   "engines": {
     "node": ">= 10"
   },
@@ -43,7 +42,8 @@
   },
   "config": {
     "commitizen": {
-      "path": "./index.js"
+      "path": "./index.js",
+      "prefix": true
     }
   }
 }

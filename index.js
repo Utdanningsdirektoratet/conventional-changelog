@@ -1,11 +1,11 @@
 'format cjs';
 
-var engine = require('./engine');
-var conventionalCommitTypes = require('conventional-commit-types');
-var configLoader = require('commitizen').configLoader;
+const engine = require('./engine');
+const conventionalCommitTypes = require('conventional-commit-types');
+const configLoader = require('commitizen').configLoader;
 
-var config = configLoader.load();
-var options = {
+const config = configLoader.load();
+const options = {
   types: conventionalCommitTypes.types,
   defaultType: process.env.CZ_TYPE || config.defaultType,
   defaultScope: process.env.CZ_SCOPE || config.defaultScope,
@@ -23,7 +23,8 @@ var options = {
     (process.env.CZ_MAX_LINE_WIDTH &&
       parseInt(process.env.CZ_MAX_LINE_WIDTH)) ||
     config.maxLineWidth ||
-    100
+    100,
+  prefixWithBranch: config.prefix !== undefined ? config.prefix : process.env.prefix || false
 };
 
 (function(options) {
