@@ -159,34 +159,6 @@ module.exports = function(options) {
             return answers.isBreaking;
           }
         },
-
-        {
-          type: 'confirm',
-          name: 'isIssueAffected',
-          message: 'Does this change affect any open issues?',
-          default: options.defaultIssues ? true : false
-        },
-        {
-          type: 'input',
-          name: 'issuesBody',
-          default: '-',
-          message:
-            'If issues are closed, the commit requires a body. Please enter a longer description of the commit itself:\n',
-          when: function(answers) {
-            return (
-              answers.isIssueAffected && !answers.body && !answers.breakingBody
-            );
-          }
-        },
-        {
-          type: 'input',
-          name: 'issues',
-          message: 'Add issue references (e.g. "fix #123", "re #123".):\n',
-          when: function(answers) {
-            return answers.isIssueAffected;
-          },
-          default: options.defaultIssues ? options.defaultIssues : undefined
-        }
       ]).then(function(answers) {
         var wrapOptions = {
           trim: true,
@@ -212,9 +184,7 @@ module.exports = function(options) {
           : '';
         breaking = breaking ? wrap(breaking, wrapOptions) : false;
 
-        var issues = answers.issues ? wrap(answers.issues, wrapOptions) : false;
-
-        commit(filter([head, body, breaking, issues]).join('\n\n'));
+        commit(filter([head, body, breaking]).join('\n\n'));
       });
     }
   };
