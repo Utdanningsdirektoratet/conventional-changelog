@@ -7,6 +7,11 @@ const chalk = require('chalk');
 const fs = require('fs');
 const find = require('findup-sync');
 
+function validBranch(branchName) {
+  const regExp =/(hss|hfl)-\d+/g;
+  return regExp.test(branchName);
+}
+
 function branch() {
   return parseBranch(fs.readFileSync(gitHeadPath()));
 }
@@ -37,8 +42,8 @@ const headerLength = function(answers) {
   );
 };
 
-const maxSummaryLength = function(options, answers, branch) {
-  return options.maxHeaderWidth - headerLength(answers) - (answers.prefixWithBranchName ? branch.length + 1 : 0);
+const maxSummaryLength = function(options, answers, branchName, prefix) {
+  return options.maxHeaderWidth - headerLength(answers) - (validBranch(branchName) && (prefix || answers.prefixWithBranchName) ? branchName.length + 1 : 0);
 };
 
 var filterSubject = function(subject, disableSubjectLowerCase) {
@@ -65,7 +70,7 @@ module.exports = function(options) {
       value: key
     };
   });
-  const branchName = branch();
+  const branchName = branch(prefixWithBranch);
 
   return {
     // When a user runs `git cz`, prompter will
@@ -102,15 +107,15 @@ module.exports = function(options) {
           default: options.defaultScope,
           filter: function(value) {
             return options.disableScopeLowerCase
-              ? value.trim()
+              ? vale.trim()
               : value.trim().toLowerCase();
           }
         },
         // Only add this question if the prefixWithBranch is set in config in package.json
-        ...(prefixWithBranch ? [{
+        ...(!prefixWithBranch && validBranch(branchName) ? [{
           type: 'confirm',
           name: 'prefixWithBranchName',
-          message: `Do you want to prefix the subject with ${branchName}?`,
+          message: `Do you want to prefix the subject wriewjroiweirwer with ${branchName}?`,
           default: false
         }] : []),
         {
@@ -119,7 +124,7 @@ module.exports = function(options) {
           message: function(answers) {
             return (
               'Write a short, imperative tense description of the change (max ' +
-              maxSummaryLength(options, answers, branchName) +
+              maxSummaryLength(options, answers, branchName, prefixWithBranch) +
               ' chars):\n'
             );
           },
@@ -129,10 +134,10 @@ module.exports = function(options) {
 
             return filteredSubject.length == 0
               ? 'subject is required'
-              : filteredSubject.length <= maxSummaryLength(options, answers, branchName)
+              : filteredSubject.length <= maxSummaryLength(options, answers, branchName, prefixWithBranch)
               ? true
               : 'Subject length must be less than or equal to ' +
-                maxSummaryLength(options, answers, branchName) +
+                maxSummaryLength(options, answers, branchName, prefixWithBranch) +
                 ' characters. Current length is ' +
                 filteredSubject.length +
                 ' characters.';
@@ -140,7 +145,7 @@ module.exports = function(options) {
           transformer: function(subject, answers) {
             var filteredSubject = filterSubject(subject, options.disableSubjectLowerCase);
             var color =
-              filteredSubject.length <= maxSummaryLength(options, answers, branchName)
+              filteredSubject.length <= maxSummaryLength(options, answers, branchName, prefixWithBranch)
                 ? chalk.green
                 : chalk.red;
             return color('(' + filteredSubject.length + ') ' + subject);
@@ -199,7 +204,7 @@ module.exports = function(options) {
         const scope = answers.scope ? '(' + answers.scope + ')' : '';
 
         // Hard limit this line in the validate
-        const head = answers.type + scope + ': ' + (answers.prefixWithBranchName ? `#${branch()} ` : '') + answers.subject;
+        const head = answers.type + scope + ': ' + ((answers.prefixWithBranchName || prefixWithBranch) && validBranch(branchName) ? `#${branchName} ` : '') + answers.subject;
 
         // Wrap these lines at options.maxLineWidth characters
         const body = answers.body ? wrap(answers.body, wrapOptions) : false;
