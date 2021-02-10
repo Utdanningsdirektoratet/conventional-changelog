@@ -4,9 +4,9 @@ const engine = require('./engine');
 const conventionalCommitTypes = require('conventional-commit-types');
 const configLoader = require('commitizen').configLoader;
 
-const config = configLoader.load();
-const options = {
-  types: conventionalCommitTypes.types,
+var config = configLoader.load() || {};
+var options = {
+  types: config.types || conventionalCommitTypes.types,
   defaultType: process.env.CZ_TYPE || config.defaultType,
   defaultScope: process.env.CZ_SCOPE || config.defaultScope,
   defaultSubject: process.env.CZ_SUBJECT || config.defaultSubject,
@@ -14,6 +14,8 @@ const options = {
   defaultIssues: process.env.CZ_ISSUES || config.defaultIssues,
   disableScopeLowerCase:
     process.env.DISABLE_SCOPE_LOWERCASE || config.disableScopeLowerCase,
+  disableSubjectLowerCase:
+    process.env.DISABLE_SUBJECT_LOWERCASE || config.disableSubjectLowerCase,
   maxHeaderWidth:
     (process.env.CZ_MAX_HEADER_WIDTH &&
       parseInt(process.env.CZ_MAX_HEADER_WIDTH)) ||

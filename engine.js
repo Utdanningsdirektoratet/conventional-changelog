@@ -46,9 +46,9 @@ const maxSummaryLength = function(options, answers, branchName, prefix) {
   return options.maxHeaderWidth - headerLength(answers) - (validBranch(branchName) && (prefix || answers.prefixWithBranchName) ? branchName.length + 1 : 0);
 };
 
-const filterSubject = function(subject) {
+var filterSubject = function(subject, disableSubjectLowerCase) {
   subject = subject.trim();
-  if (subject.charAt(0).toLowerCase() !== subject.charAt(0)) {
+  if (!disableSubjectLowerCase && subject.charAt(0).toLowerCase() !== subject.charAt(0)) {
     subject =
       subject.charAt(0).toLowerCase() + subject.slice(1, subject.length);
   }
@@ -130,7 +130,8 @@ module.exports = function(options) {
           },
           default: options.defaultSubject,
           validate: function(subject, answers) {
-            const filteredSubject = filterSubject(subject);
+            var filteredSubject = filterSubject(subject, options.disableSubjectLowerCase);
+
             return filteredSubject.length == 0
               ? 'subject is required'
               : filteredSubject.length <= maxSummaryLength(options, answers, branchName, prefixWithBranch)
@@ -142,15 +143,15 @@ module.exports = function(options) {
                 ' characters.';
           },
           transformer: function(subject, answers) {
-            const filteredSubject = filterSubject(subject);
-            const color =
+            var filteredSubject = filterSubject(subject, options.disableSubjectLowerCase);
+            var color =
               filteredSubject.length <= maxSummaryLength(options, answers, branchName, prefixWithBranch)
                 ? chalk.green
                 : chalk.red;
             return color('(' + filteredSubject.length + ') ' + subject);
           },
           filter: function(subject) {
-            return filterSubject(subject);
+            return filterSubject(subject, options.disableSubjectLowerCase);
           }
         },
         {
