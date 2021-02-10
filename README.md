@@ -45,19 +45,19 @@ Dependency:
 
 #### Unix based os
 
-Install udir changelog globally with: `npm i @udir/conventional-changelog -g`
+Install udir changelog globally with: `npm i @utdanningsdirektoratet/conventional-changelog -g`
 
 In the home folder  - create the file `.czrc` and put this config in there:
 ```json
 {
-  "path": "@udir/conventional-changelog",
+  "path": "@utdanningsdirektoratet/conventional-changelog",
   "prefix": true // Change to false if you don't want to be asked to
                  // prepend the subject with branch name
 }
 ```
 or do:
 `echo '{
-         "path": "@udir/conventional-changelog",
+         "path": "@utdanningsdirektoratet/conventional-changelog",
          "prefix": true
        }' > ~/.czrc
 `

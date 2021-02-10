@@ -1,5 +1,5 @@
 {
-  "name": "@udir/conventional-changelog",
+  "name": "@utdanningsdirektoratet/conventional-changelog",
   "version": "1.1.2",
   "description": "Commitizen adapter following the conventional-changelog format for urk.",
   "main": "index.js",
