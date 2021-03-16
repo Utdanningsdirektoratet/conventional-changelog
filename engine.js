@@ -115,7 +115,7 @@ module.exports = function(options) {
         ...(!prefixWithBranch && validBranch(branchName) ? [{
           type: 'confirm',
           name: 'prefixWithBranchName',
-          message: `Do you want to prefix the subject wriewjroiweirwer with ${branchName}?`,
+          message: `Do you want to prefix the subject with ${branchName}?`,
           default: false
         }] : []),
         {
